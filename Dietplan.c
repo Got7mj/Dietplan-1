@@ -90,7 +90,7 @@ void telaPrincipal(void) {
     printf("///                                                                                   ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t>>> Tecle <ENTER> para continuar...\ n");
+    printf("\t\t\t>>> Tecle <ENTER> para continuar...\n");
     getchar();
 }
 
