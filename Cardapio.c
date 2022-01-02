@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 #include "cardapio.h"
+#include "biblioteca.h"
 
 /////
 ///// Funções do Módulo Cardápio
@@ -16,9 +17,9 @@ void moduloCardapio(void) {
                         break;
             case '2':  telaPesquisarCardapio();
                         break;
-             case '3':  telaAlterarCardapio();
+            case '3':  telaAlterarCardapio();
                         break;
-             case '4':  telaExcluircCardapio();
+            case '4':  telaExcluirCardapio();
                         break;
         }
     } while (opcao != '0');
@@ -29,7 +30,7 @@ void moduloCardapio(void) {
 char menuCardapio(void) {
     char op;
 
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -50,8 +51,7 @@ char menuCardapio(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<< ... Aguarde ... >>>\n");
-    sleep(1);
+    delay(1);
     return op;
 }
 
@@ -61,26 +61,27 @@ void telaCadastrarCardapio(void) {
     char num[12];
     char criacao[11];
     
-    system("clear||cls");
-    printf("\n");
-    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
-    printf("///                                                                               ///\n");
-    printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
-    printf("///                = = = = = = = = = Cadastrar Cardápio = = = = = = = =           ///\n");
-    printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
-    printf("///                                                                               ///\n");
-    printf("///                  Numeração (apenas números): ");  
-    scanf("%[^\n]", num);
-    getchar();
-    printf("///                  Data da Criação (dd/mm/aaaa): ");
-    scanf("%[0-9]", criacao);
-    getchar();
-    printf("///                                                                               ///\n");
-    printf("///                                                                               ///\n");
-    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
-    printf("\n");
-    printf("\t\t\t<<< ... Aguarde ... >>>\n");
-    sleep(1);
+    limpaTela();
+        printf("\n");
+        printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+        printf("///                                                                               ///\n");
+        printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
+        printf("///                = = = = = = = = = Cadastrar Cardápio = = = = = = = =           ///\n");
+        printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
+        printf("///                                                                               ///\n");
+    do {
+        printf("///               Numeração (apenas números): ");  
+        scanf("%[^\n]", num);
+        getchar();
+    } while (!validarNum(num));
+        printf("///                  Data da Criação (dd/mm/aaaa): ");
+        scanf("%[0-9]", criacao);
+        getchar();
+        printf("///                                                                               ///\n");
+        printf("///                                                                               ///\n");
+        printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+        printf("\n");
+        delay(1);
 }
 
 
@@ -88,7 +89,7 @@ void telaCadastrarCardapio(void) {
 void telaPesquisarCardapio(void) {
     char num[12];
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -103,8 +104,7 @@ void telaPesquisarCardapio(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<< ... Aguarde ... >>>\n");
-    sleep(1);
+    delay(1);
 }
 
 
@@ -112,7 +112,7 @@ void telaPesquisarCardapio(void) {
 void telaAlterarCardapio(void) {
     char num[12];
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -127,8 +127,7 @@ void telaAlterarCardapio(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<< ... Aguarde ... >>>\n");
-    sleep(1);
+    delay(1);
 }
 
 
@@ -136,7 +135,7 @@ void telaAlterarCardapio(void) {
 void telaExcluirCardapio(void) {
     char num[12];
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -151,7 +150,6 @@ void telaExcluirCardapio(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<< ... Aguarde ... >>>\n");
-    sleep(1);
+    delay(1);
 }
 
