@@ -1,29 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 #include "paciente.h"
+#include "biblioteca.h"
 
-
-
-//////
-////// Funções do Módulo Paciente
-//////
+typedef struct paciente;
 
 void moduloPaciente(void);
     char opcao;
     do {
-        opcao = telaMenuPaciente();
+        opcao = menuPaciente();
         switch(opcao) {
-            case '1': 	telaCadastrarPaciente();
+            case '1': 	cadastrarPaciente();
                         break;
-	          case '2':   telaPesquisarPaciente();
-	    		              break;
-	          case '3':   telaAlterarPaciente();
-	    		              break;
-	          case '4':   telaExcluirPaciente();
-	    		              break;
-	      } 		
+	        case '2':   pesquisarPaciente();
+	    		        break;
+	        case '3':   alterarPaciente();
+	    		        break;
+	        case '4':   excluirPaciente();
+	    		        break;
+	    } 		
     } while (opcao != '0');
+}
+
+
+
+void cadastrarPaciente(void){
+    Paciente *pac;
+    // função ainda em desenvolvimento
+    
+    // ler os dados do paciente com a função telaCadastrarPaciente()
+    pac = telaPreencherPaciente();
+
+    // gravar o registro no arquivo de pacientes
+    gravarPaciente(pac);
+
+    // liberar o espaço de memória da estrutura 
+    free(pac);
+}
+
+
+
+void atualizarPaciente(void) {
+  Paciente* pac;
+  char* cpf;
+	// função ainda em desenvolvimento
+
+	// exibe a tela apenas para testes
+	telaAtualizarPaciente();
+	cpf = telaAtualizarPaciente();
+
+  // pesquisa o paciente no arquivo
+  pac = buscarPaciente(cpf);
+
+  if (pac == NULL) {
+    printf("\n\nPaciente não encontrado!\n\n");
+  } else {
+    regravarPaciente(pac, cpf);
+  }
+
+
+}
+
+
+void excluirPaciente(void) {
+	// função ainda em desenvolvimento
+	// exibe a tela apenas para testes
+	telaExcluirPaciente();
 }
 
 
@@ -31,7 +74,7 @@ void moduloPaciente(void);
 void telaMenuPaciente(void) {
     char op;
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -52,69 +95,66 @@ void telaMenuPaciente(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
     return op;
 }
 
            
            
-void telaCadastrarPaciente(void) {
-    char cpf[12];
-    char nome[51];
-    char idade[12];
-    char peso[12];
-    char alt[12];
-    char email[51];
-    char nasc[11];
-    char celular[12];
+Paciente* telaPreencherPaciente(void) {
+    Pacente *pac;
   
-    system("clear||cls");
-    printf("\n");
-    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
-    printf("///                                                                               ///\n");
-    printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
-    printf("///                = = = = = = = = Cadastrar Paciente = = = = = = = =             ///\n");
-    printf("///                 = = = = = = = = = = = = = = = = = = = = = = = =               ///\n");
-    printf("///                                                                               ///\n");
-    printf("///                  CPF (apenas números): ");
-    scanf("%[0-9]", cpf);
-    getchar();
-    printf("///                  Nome completo: ");
-    scanf("%[A-ZÁÉÍÓÚÂÊÔÇÀÃÕ a-záéíóúâêôçàãõ]", nome);
-    getchar();
-    printf("///                  Idade: ");
-    scanf("%[0-9]", idade);
-    getchar();
-    printf("///                  Peso: ");
-    scanf("%[0-9]", peso);
-    getchar();
-    printf("///                  Altura: ");
-    scanf("%[0-9]", alt);
-    getchar();
-    printf("///                  E-mail: ");
-    scanf("%[A-Za-z0-9@._]", email);
-    getchar();
-    printf("///                  Data de Nascimento (dd/mm/aaaa): ");  
-    scanf("%[0-9]", nasc);
-    getchar();
-    printf("///                  Celular (apenas números):  ");
-    scanf("%[0-9]", celular);
-    getchar();
-    printf("///                                                                               ///\n");
-    printf("///                                                                               ///\n");
-    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
-    printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+        limpaTela();
+        printf("\n");
+        printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+        printf("///                                                                               ///\n");
+        printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
+        printf("///                = = = = = = = = Cadastrar Paciente = = = = = = = =             ///\n");
+        printf("///                 = = = = = = = = = = = = = = = = = = = = = = = =               ///\n");
+        printf("///                                                                               ///\n");
+pac = (Paciente*) malloc(sizeof(Paciente)); 
+do {
+        printf("///                  CPF (apenas números): ");
+        scanf("%[0-9]", pac->cpf);
+        getchar();
+} while (!validarCPF(pac->cpf));
+        printf("///                  Nome completo: ");
+        scanf("%[A-ZÁÉÍÓÚÂÊÔÇÀÃÕ a-záéíóúâêôçàãõ]", pac->nome);
+        getchar();
+        printf("///                  Idade: ");
+        scanf("%[0-9]", pac->idade);
+        getchar();
+        printf("///                  Peso: ");
+        scanf("%[0-9]", pac->peso);
+        getchar();
+        printf("///                  Altura: ");
+        scanf("%[0-9]", pac->alt);
+        getchar();
+        printf("///                  E-mail: ");
+        scanf("%[A-Za-z0-9@._]", pac->email);
+        getchar();
+        printf("///                  Data de Nascimento (dd/mm/aaaa): ");  
+        scanf("%[0-9]", pac->nasc);
+        getchar();
+do {
+        printf("///                  Celular (apenas números com DDD):  ");
+        scanf("%[0-9]", pac->celular);
+        getchar();
+} while (!validarCelular(pac->celular));
+        printf("///                                                                               ///\n");
+        printf("///                                                                               ///\n");
+        printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+        printf("\n");
+        delay(1);
+        return pac;
 }
            
 
 
-void telaPesquisarPaciente(void) {
-    char cpf[12];
+char telaPesquisarPaciente(void) {
+    char* cpf;
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -129,16 +169,16 @@ void telaPesquisarPaciente(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
+    return cpf;
 }
 
 
  
-void telaAlterarPaciente(void) {
-    char cpf[12];
+char telaAlterarPaciente(void) {
+    char* cpf;
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -147,22 +187,22 @@ void telaAlterarPaciente(void) {
     printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
     printf("///                                                                               ///\n");
     printf("///                   Informe o CPF (apenas números): ");
-    scanf("%[0-9]", cpf;
+    scanf("%[0-9]", cpf);
     getchar();
     printf("///                                                                               ///\n");
     printf("///                                                                                ///n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
+    return cpf;
 }
 
 
 
-void telaExcluirPaciente(void) {
-    char cpf[12];
+char telaExcluirPaciente(void) {
+    char* cpf;
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -177,6 +217,71 @@ void telaExcluirPaciente(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1); 
+    delay(1); 
+    return cpf;
+}
+
+
+
+void gravarPaciente(Paciente* pac) {
+    FILE* fp;
+
+  fp = fopen("pacientes.dat", "ab");
+   if (fp == NULL) {
+    printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+    printf("Não é possível continuar este programa...\n");
+    exit(1);
+  }
+  fwrite(pac, sizeof(Paciente), 1, fp);
+  fclose(fp);
+}
+
+
+
+Paciente* buscarPaciente(char* cpf) {
+    FILE* fp;
+    Paciente* pac;
+
+    pac(Paciente*) malloc(sizeof(Paciente));
+    fp = fopen("pacientes.dat", "rb");
+    if (fp == NULL) {
+      printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
+      printf("Não é possível continuar este programa...\n");
+      (1);
+    }
+    while(!feof(fp)) {
+      fread(pac, sizaof(Paciente), 1, fp);
+      if (strcm(pac->cpf, cpf) == 0) {
+      fclose(fp);
+      return pac;    
+      }
+    }
+    fclose(fp);
+    return NULL;
+}
+
+
+
+void exibirPaciente(Paciente* pac) {
+    if (pac == NULL) {
+        printf("\n= = = Paciente Inexistente = = =\n");
+    } else {
+        printf("\n= = = Paciente Cadastrado = = =\n");
+        printf("CPF do Paciente: %s\n", pac->cpf);
+        printf("Nome do Paciente: %s\n", pac->nome);
+        printf("Idade do Paciente: %s\n", pac->idade);
+        printf("Peso do Paciente: %s\n", pac->peso);
+        printf("Altura do Paciente: %s\n", pac->altura);
+        printf("E-mail do Paciente: %s\n", pac->email);
+        printf("Data de Nasc: %s\n", pac->nasc);
+        printf("Celular: %s\n", pac->celular);
+    }
+    printf("\n\nTecle ENTER para continuar!\n\n");
+    getchar();
+}  
+
+
+
+void regravarPaciente(Paciente* pac, char* cpf) {
+    
 }
