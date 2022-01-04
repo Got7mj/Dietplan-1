@@ -27,51 +27,66 @@ void moduloPaciente(void);
 
 void cadastrarPaciente(void){
     Paciente *pac;
-    // função ainda em desenvolvimento
     
-    // ler os dados do paciente com a função telaCadastrarPaciente()
     pac = telaPreencherPaciente();
-
-    // gravar o registro no arquivo de pacientes
     gravarPaciente(pac);
-
-    // liberar o espaço de memória da estrutura 
     free(pac);
 }
 
 
 
-void atualizarPaciente(void) {
+void pesquisarPaciente(void) {
   Paciente* pac;
   char* cpf;
-	// função ainda em desenvolvimento
-
-	// exibe a tela apenas para testes
-	telaAtualizarPaciente();
-	cpf = telaAtualizarPaciente();
-
-  // pesquisa o paciente no arquivo
+	
+  cpf = telaPesquisararPaciente();
   pac = buscarPaciente(cpf);
+	exibirPaciente(pac);
+  free(pac);
+  free(cpf);
+}
 
+
+void alterarPaciente(void) {
+  Paciente* pac;
+  char* cpf;
+
+  cpf = telaAlterarPaciente();
+  pac = buscarPaciente(cpf);
   if (pac == NULL) {
-    printf("\n\nPaciente não encontrado!\n\n");
+  printf("\n\nPaciente não encontrado!\n\n");
   } else {
-    regravarPaciente(pac, cpf);
+            pac = telaPreencherPaciente();
+            strcpy(pac->cpf, cpf);
+            regravarPaciente(pac);
+            // Outra opção:
+            // excluirPaciente(cpf);
+            // gravarPaciente(pac);
   }
-
-
+  free(cpf);
 }
 
 
 void excluirPaciente(void) {
-	// função ainda em desenvolvimento
-	// exibe a tela apenas para testes
-	telaExcluirPaciente();
+  Paciente* pac;
+  char *cpf;
+
+	cpf = telaExcluirPaciente();
+  pac = (Paciente*) malloc(sizeof(Paciente));
+  pac = buscarPaciente(cpf);
+  if (pac == NULL) {
+  printf("\n\nPaciente não encontrado!\n\n");
+  } else {
+            pac->status = False;
+            regravarPaciente(pac);
+            free(pac);
+  }
+  free(cpf);
 }
 
 
 
-void telaMenuPaciente(void) {
+char menuPaciente(void) {
     char op;
     
     limpaTela();
@@ -101,8 +116,31 @@ void telaMenuPaciente(void) {
 
            
            
+void telaErroArquivo(void) {
+  limpaTela();
+  printf("\n");
+  printf("/////////////////////////////////////////////////////////////////////////////\n");
+	printf("///                                                                       ///\n");
+	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
+	printf("///           = = = = = = =  Ops! Ocorreu em erro = = = = = =             ///\n");
+	printf("///           = = =  Não foi possível acessar o arquivo = = =             ///\n");
+	printf("///           = = =com informações sobre os Pacientes = = = =             ///\n");
+	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
+	printf("///           = =  Pedimos desculpas pelos inconvenientes = =             ///\n");
+	printf("///           = = =  mas este programa será finalizado! = = =             ///\n");
+	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
+	printf("///                                                                       ///\n");
+  printf("/////////////////////////////////////////////////////////////////////////////\n");
+  printf("\n");
+	printf("\n\nTecle ENTER para continuar!\n\n");
+	getchar();
+	exit(1);
+}
+
+
+
 Paciente* telaPreencherPaciente(void) {
-    Pacente *pac;
+    Paciente *pac;
   
         limpaTela();
         printf("\n");
@@ -112,12 +150,12 @@ Paciente* telaPreencherPaciente(void) {
         printf("///                = = = = = = = = Cadastrar Paciente = = = = = = = =             ///\n");
         printf("///                 = = = = = = = = = = = = = = = = = = = = = = = =               ///\n");
         printf("///                                                                               ///\n");
-pac = (Paciente*) malloc(sizeof(Paciente)); 
-do {
+  pac = (Paciente*) malloc(sizeof(Paciente)); 
+  do {
         printf("///                  CPF (apenas números): ");
         scanf("%[0-9]", pac->cpf);
         getchar();
-} while (!validarCPF(pac->cpf));
+  } while (!validarCPF(pac->cpf));
         printf("///                  Nome completo: ");
         scanf("%[A-ZÁÉÍÓÚÂÊÔÇÀÃÕ a-záéíóúâêôçàãõ]", pac->nome);
         getchar();
@@ -153,7 +191,8 @@ do {
 
 char telaPesquisarPaciente(void) {
     char* cpf;
-    
+
+    cpf = (char*) malloc(12*sizeof(char));
     limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
@@ -178,6 +217,7 @@ char telaPesquisarPaciente(void) {
 char telaAlterarPaciente(void) {
     char* cpf;
     
+    cpf = (char*) malloc(12*sizeof(char));
     limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
@@ -202,6 +242,7 @@ char telaAlterarPaciente(void) {
 char telaExcluirPaciente(void) {
     char* cpf;
     
+    cpf = (char*) malloc(12*sizeof(char));
     limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
@@ -227,10 +268,8 @@ void gravarPaciente(Paciente* pac) {
     FILE* fp;
 
   fp = fopen("pacientes.dat", "ab");
-   if (fp == NULL) {
-    printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
-    printf("Não é possível continuar este programa...\n");
-    exit(1);
+  if (fp == NULL) {
+          telaErroArquivo();
   }
   fwrite(pac, sizeof(Paciente), 1, fp);
   fclose(fp);
@@ -242,19 +281,16 @@ Paciente* buscarPaciente(char* cpf) {
     FILE* fp;
     Paciente* pac;
 
-    pac(Paciente*) malloc(sizeof(Paciente));
+    pac = (Paciente*) malloc(sizeof(Paciente));
     fp = fopen("pacientes.dat", "rb");
     if (fp == NULL) {
-      printf("Ops! Ocorreu um erro na abertura do arquivo!\n");
-      printf("Não é possível continuar este programa...\n");
-      (1);
+            telaErroArquivo();
     }
-    while(!feof(fp)) {
-      fread(pac, sizaof(Paciente), 1, fp);
-      if (strcm(pac->cpf, cpf) == 0) {
-      fclose(fp);
-      return pac;    
-      }
+    while(fread(pac, sizeof(Paciente), 1, fp)) {
+            if (strcm(pac->cpf, cpf) == 0) && (pac->status == True)) {
+                  fclose(fp);
+                  return pac;    
+            }
     }
     fclose(fp);
     return NULL;
@@ -275,6 +311,7 @@ void exibirPaciente(Paciente* pac) {
         printf("E-mail do Paciente: %s\n", pac->email);
         printf("Data de Nasc: %s\n", pac->nasc);
         printf("Celular: %s\n", pac->celular);
+        printf("Status: %d\n", pac->status);
     }
     printf("\n\nTecle ENTER para continuar!\n\n");
     getchar();
@@ -283,5 +320,26 @@ void exibirPaciente(Paciente* pac) {
 
 
 void regravarPaciente(Paciente* pac, char* cpf) {
-    
+        int achou;
+        FILE* fp;
+        Paciente* pacLido;
+
+        pacLido = (Paciente*) malloc(sizeof(Paciente));
+        fp = fopen("pacientes.dat", "r+b");
+        if (fp == NULL) {
+                telaErroArquivo();
+        }
+        //while(!feof(fp)) {
+        achou = False;
+        while(fread(pacLido, sizeof(Paciente), 1, fp) && !achou) {
+                //fread(pacLido, sizeof(Paciente), 1, fp);
+                if (strcmp(pacLido->cpf,, pac->cpf) == 0) {
+                      achou = True;
+                      fseek(fp, -1*sizeof(Paciente), SEEK_CUR);
+                fwrite(pac, sizeof(Paciente), 1, fp);
+                        //break;
+                }
+        }
+        fclose(fp);
+        free(pacLido)
 }

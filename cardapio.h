@@ -11,16 +11,21 @@
 
 
 
-//////
-////// Assisnaturas das funcões Módulo Cardápio
-//////
+typedef struct cardapio Cardapio;
+
+struct cardapio {
+    char num[12];
+    char criacao[11];
+    int status;
+};
 
 void moduloCardapio(void);
 char menuCardapio(void);
 Cardapio* telapreecherCardapio(void);
 char* telaPesquisarCardapio(void);
 char* telaAlterarCardapio(void);
-void telaExcluirCardapio(void);
+char* telaExcluirCardapio(void);
+void telaErroArquivo(void);
 void cadastrarCardapio(void);
 void pesquisarCardapio(void);
 void alterarCardapio(void);
@@ -29,5 +34,5 @@ void gravarCardapio(Cardapio*);
 void exibirCardapio(Cardapio*);
 Cardapio* buscarCardapio(char);
 void exibirCardapio(Cardapio*);
-void regravarCardapio(Cardapio*, char*);
+void regravarCardapio(Cardapio*);
 

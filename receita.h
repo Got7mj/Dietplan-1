@@ -11,9 +11,14 @@
 
 
 
-//////
-////// Assistenaturas das funções 
-//////
+typedef struct  receita Receita;
+
+struct receita {
+    char num[12];
+    char criacao[11];
+    int status;
+};
+
 
 void moduloReceita(void);
 char telaMenuReceita(void);

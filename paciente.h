@@ -20,6 +20,7 @@ struct paciente {
     char email[51];
     char nasc[11];
     char celular[12];
+    int status;
 };
 
 void moduloPaciente(void);
@@ -28,6 +29,7 @@ Paciente* telaPreencherPaciente(void);
 char* telaPesquisarPaciente(void);
 char* telaAlterarPaciente(void);
 char* telaExcluirPaciente(void);
+void telaErroArquivo(void);
 void cadastrarPaciente(void);
 void pesquisarPaciente(void);
 void alterarPaciente(void);
@@ -36,16 +38,5 @@ void gravarPaciente(Paciente*);
 void exibirPaciente(Paciente*);
 Paciente* buscarPaciente(char*);
 void exibirPaciente(Paciente*);
-void regravarPaciente(Paciente*, char*);
+void regravarPaciente(Paciente*);
 
-///
-/// Funções de validação - serão transferidas posteriormente para o módulo util.c
-///
-int validaCPF(char []);
-int validaNome(char []);
-int validaIdade(char []);
-int validaPeso(char []);
-int validaAltura(char []);
-int validaEmail(char []);
-int validaData(char []);
-int validaCelular(char []);
