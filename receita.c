@@ -1,14 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unist.h>
 #include "receita.h"
 #include "biblioteca.h"
 
-
-
-///////
-//////Funções do Módulo Receita
-//////
 
 void moduloReceita(void);
      char opcao;
@@ -28,11 +22,41 @@ void moduloReceita(void);
 }
 
 
+void cadastrarReceita(void) {
+    Receita* rct;
 
-void telaMenuReceitas(void) {
+    rct = telaCadastrarReceita();
+    gravarReceita(rct);
+    free(rct);
+}
+
+
+void pesquisarReceita(void) {
+    // função ainda em desenvolvimento
+	// exibe a tela apenas para testes
+    telaPesquisarReceita();
+}
+
+
+void alterarReceita(void) {
+    // função ainda em desenvolvimento
+	// exibe a tela apenas para testes
+    telaAlterarReceita();
+}
+
+
+void excluirReceita(void) {
+    // função ainda em desenvolvimento
+	// exibe a tela apenas para testes
+    telaExcluirReceita();
+}
+
+
+
+void menuReceita(void) {
     char op;
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -53,18 +77,39 @@ void telaMenuReceitas(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
     return op;       
 }
            
            
            
-  void telaCadastrarReceita(void) {
-    char num[12];
-    char criacao[11];
+ void telaErroArquivoReceita(void) {
+    limpaTela();
+    printf("\n");
+    printf("/////////////////////////////////////////////////////////////////////////////\n");
+	printf("///                                                                       ///\n");
+	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
+	printf("///           = = = = = = =  Ops! Ocorreu em erro = = = = = =             ///\n");
+	printf("///           = = =  Não foi possível acessar o arquivo = = =             ///\n");
+	printf("///           = = =  com informações sobre as Receitas = = =              ///\n");
+	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
+	printf("///           = =  Pedimos desculpas pelos inconvenientes = =             ///\n");
+	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
+	printf("///                                                                       ///\n");
+    printf("/////////////////////////////////////////////////////////////////////////////\n");
+    printf("\n");
+	printf("\n\nTecle ENTER para continuar!\n\n");
+	getchar();
+	exit(1);
+}
+ 
 
-    system("clear||cls");
+
+  Receita* telaCadastrarReceita(void) {
+    Receita rct;
+    rct = (Receita*) malloc(sizeof(Receita));
+
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -76,14 +121,14 @@ void telaMenuReceitas(void) {
     scanf("%[0-9]", num);
     getchar();
     printf("///                  Data da Criação (dd/mm/aaaa): ");
-    scanf("%[0-9]", criacao);
+    scanf("%[0-9/]", criacao);
     getchar();
     printf("///                                                                               ///\n");
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
+    return rct;
 }
 
 
@@ -91,7 +136,7 @@ void telaMenuReceitas(void) {
 void telaPesquisarReceita(void) {
     char num[12];
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -106,8 +151,7 @@ void telaPesquisarReceita(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
 }
    
 
@@ -115,7 +159,7 @@ void telaPesquisarReceita(void) {
 void telaAlterarReceita(void) {
     char num[12];
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -130,8 +174,7 @@ void telaAlterarReceita(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
 }
    
 
@@ -139,7 +182,7 @@ void telaAlterarReceita(void) {
 void telaExcluirReceita(void) {
     char num[12];
     
-    system("clear||cls");
+    limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("///                                                                               ///\n");
@@ -154,6 +197,18 @@ void telaExcluirReceita(void) {
     printf("///                                                                               ///\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
-    printf("\t\t\t<<<...Aguarde...>>>\n");
-    sleep(1);
+    delay(1);
 }  
+
+
+
+void gravarReceita(Receita* rct) {
+    FILE* fp;
+
+	fp = fopen("receita.dat", "ab");
+	if (fp == NULL) {
+		telaErroArquivoReceita();
+	}
+	fwrite(rct, sizeof(Receita), 1, fp);
+	fclose(fp);
+}

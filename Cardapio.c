@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "cardapio.h"
 #include "biblioteca.h"
 
@@ -24,16 +25,23 @@ void moduloCardapio(void) {
 
 
 void cadastrarCardapio(void) {
-    // função ainda em desenvolvimento
-	// exibe a tela apenas para testes
-    telaCadastrarCardapio();
+    Cardapio* cad;
+
+    cad = telaCadastrarCardapio();
+    gravarCardapio(cad);
+    free(cad);
 }
 
 
 void pesquisarCardapio(void) {
-    // função ainda em desenvolvimento
-	// exibe a tela apenas para testes
-    telaPesquisarCardapio();
+    Cardapio* cad;
+    char* num;
+
+    num = telaPesquisarCardapio();
+    cad = buscarCardapio(cad);
+    exibirCardapio(cad);
+    free(cad);
+    free(num);
 }
 
 
@@ -81,10 +89,34 @@ char menuCardapio(void) {
 
 
 
-void telaCadastrarCardapio(void) {
-    char num[12];
-    char criacao[11];
+void telaErroArquivoCardapio(void) {
     
+    limpaTela();
+    printf("\n");
+    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+    printf("///                                                                               ///\n");
+    printf("///                = = = = = = = = = = = = = = = = = = = = = = = =                ///\n");
+	printf("///                = = = = = = =  Ops! Ocorreu em erro = = = = = =                ///\n");
+	printf("///                = = =  Não foi possível acessar o arquivo = = =                ///\n");
+	printf("///                = = = com informações sobre os cardápios = = =                 ///\n");
+	printf("///                = = = = = = = = = = = = = = = = = = = = = = = =                ///\n");
+	printf("///                = =  Pedimos desculpas pelos inconvenientes = =                ///\n");
+	printf("///                = = = = = = = = = = = = = = = = = = = = = = = =                ///\n");
+    printf("///                                                                               ///\n");
+    printf("///                                                                               ///\n");
+    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+    printf("\n");
+    printf("\n\nTecle ENTER para continuar!\n\n");
+	getchar();
+	exit(1);
+}
+
+
+
+Cardapio* telaCadastrarCardapio(void) {
+    Cardapio* cad;
+    cad = (Cardapio*) malloc(sizeof(Cardapio));
+
     limpaTela();
     printf("\n");
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
@@ -93,23 +125,26 @@ void telaCadastrarCardapio(void) {
     printf("///                = = = = = = = = = Cadastrar Cardápio = = = = = = = =           ///\n");
     printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
     printf("///                                                                               ///\n");
-    printf("///               Numeração (apenas números): ");  
-    scanf("%[^\n]", num);
+    printf("///                    Numeração (apenas números): ");  
+    scanf("%[0-9]", cad->num);
+	getchar();
+    printf("///                    Data da Criação (dd/mm/aaaa): ");
+    scanf("%[0-9/]", cad->criacao);
     getchar();
-    printf("///                  Data da Criação (dd/mm/aaaa): ");
-    scanf("%[0-9]", criacao);
-    getchar();
+    cad->status = True;
     printf("///                                                                               ///\n");
-    printf("///                                                                               ///\n");
-    printf("/////////////////////////////////////////////////////////////////////////////////////\n");
-    printf("\n");
-    delay(1);
+	printf("///                                                                               ///\n");
+	printf("/////////////////////////////////////////////////////////////////////////////////////\n");
+	printf("\n");
+	delay(1);
+    return cad;
 }
 
 
 
-void telaPesquisarCardapio(void) {
-    char num[12];
+char* telaPesquisarCardapio(void) {
+    char* num;
+    num = (char*) malloc(12*sizeof(char));
     
     limpaTela();
     printf("\n");
@@ -127,6 +162,7 @@ void telaPesquisarCardapio(void) {
     printf("/////////////////////////////////////////////////////////////////////////////////////\n");
     printf("\n");
     delay(1);
+    return num;
 }
 
 
@@ -174,3 +210,52 @@ void telaExcluirCardapio(void) {
     printf("\n");
     delay(1);
 }
+
+
+
+void gravarPaciente(Paciente* pac) {
+    FILE* fp;
+
+    fp = fopen("cardapio.dat", "ab");
+    if (fp == NULL) {
+            telaErroArquivoCardapio();
+    }
+    fwrite(car, sizeof(Cardapio), 1, fp);
+    fclose(fp);   
+}
+
+
+Cardapio* buscarCardapio(char* num) {
+    FILE* fp;
+    Cardapio* car;
+
+    car = (Cardapio*) malloc(sizeof(Cardapio));
+    fp = fopen("Cardapio.dat", "rb");
+    if (fp == NULL) {
+            telaErroArquivoCardapio();
+    }
+     while(fread(car, sizeof(Cardapio), 1, fp)) {
+            if ((strcmp(car->num, num) == 0) && (car->status == True)) {
+                    fclose(fp);
+                    return car;
+            }
+    }
+    fclose(fp);
+    return NULL;
+}
+
+
+
+void exibirCardapio(Cardapio* car) {
+
+  if (car == NULL) {
+    printf("\n= = = Cardapio Inexistente = = =\n");
+  } else {
+    printf("\n= = = Cardapio Cadastrado = = =\n");
+    printf("Numeração: %s\n", car->num);
+    printf("Data de criação: %s\n", car->cria);
+    printf("Status: %d\n", car->status);
+  }
+  printf("\n\nTecle ENTER para continuar!\n\n");
+  getchar();
+} 

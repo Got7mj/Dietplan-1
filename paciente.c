@@ -28,7 +28,7 @@ void moduloPaciente(void);
 void cadastrarPaciente(void){
     Paciente *pac;
     
-    pac = telaPreencherPaciente();
+    pac = telaCadastrarPaciente();
     gravarPaciente(pac);
     free(pac);
 }
@@ -39,7 +39,7 @@ void pesquisarPaciente(void) {
   Paciente* pac;
   char* cpf;
 	
-  cpf = telaPesquisararPaciente();
+  cpf = telaPesquisarPaciente();
   pac = buscarPaciente(cpf);
 	exibirPaciente(pac);
   free(pac);
@@ -56,12 +56,13 @@ void alterarPaciente(void) {
   if (pac == NULL) {
   printf("\n\nPaciente não encontrado!\n\n");
   } else {
-            pac = telaPreencherPaciente();
+            pac = telaCadastrarPaciente();
             strcpy(pac->cpf, cpf);
             regravarPaciente(pac);
             // Outra opção:
             // excluirPaciente(cpf);
             // gravarPaciente(pac);
+            free(pac);
   }
   free(cpf);
 }
@@ -99,7 +100,7 @@ char menuPaciente(void) {
     printf("///                                                                               ///\n");
     printf("///                   1. Cadastrar um novo Paciente                               ///\n");
     printf("///                   2. Pesquisar por Paciente                                   ///\n");
-    printf("///                   3. Atualizar o cadastro de um Paciente                      ///\n");
+    printf("///                   3. Alterar o cadastro de um Paciente                        ///\n");
     printf("///                   4. Excluir um paciente do sistema                           ///\n");
     printf("///                   0. Voltar ao menu anterior                                  ///\n");
     printf("///                                                                               ///\n");
@@ -116,7 +117,7 @@ char menuPaciente(void) {
 
            
            
-void telaErroArquivo(void) {
+void telaErroArquivoPaciente(void) {
   limpaTela();
   printf("\n");
   printf("/////////////////////////////////////////////////////////////////////////////\n");
@@ -127,7 +128,6 @@ void telaErroArquivo(void) {
 	printf("///           = = =com informações sobre os Pacientes = = = =             ///\n");
 	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
 	printf("///           = =  Pedimos desculpas pelos inconvenientes = =             ///\n");
-	printf("///           = = =  mas este programa será finalizado! = = =             ///\n");
 	printf("///           = = = = = = = = = = = = = = = = = = = = = = = =             ///\n");
 	printf("///                                                                       ///\n");
   printf("/////////////////////////////////////////////////////////////////////////////\n");
@@ -139,9 +139,10 @@ void telaErroArquivo(void) {
 
 
 
-Paciente* telaPreencherPaciente(void) {
+Paciente* telaCadastrarPaciente(void) {
     Paciente *pac;
-  
+    pac = (Paciente*) malloc(sizeof(Paciente));
+
         limpaTela();
         printf("\n");
         printf("/////////////////////////////////////////////////////////////////////////////////////\n");
@@ -149,8 +150,7 @@ Paciente* telaPreencherPaciente(void) {
         printf("///                  = = = = = = = = = = = = = = = = = = = = = = = =              ///\n");
         printf("///                = = = = = = = = Cadastrar Paciente = = = = = = = =             ///\n");
         printf("///                 = = = = = = = = = = = = = = = = = = = = = = = =               ///\n");
-        printf("///                                                                               ///\n");
-  pac = (Paciente*) malloc(sizeof(Paciente)); 
+        printf("///                                                                               ///\n"); 
   do {
         printf("///                  CPF (apenas números): ");
         scanf("%[0-9]", pac->cpf);
@@ -189,7 +189,7 @@ do {
            
 
 
-char telaPesquisarPaciente(void) {
+char* telaPesquisarPaciente(void) {
     char* cpf;
 
     cpf = (char*) malloc(12*sizeof(char));
@@ -214,7 +214,7 @@ char telaPesquisarPaciente(void) {
 
 
  
-char telaAlterarPaciente(void) {
+char* telaAlterarPaciente(void) {
     char* cpf;
     
     cpf = (char*) malloc(12*sizeof(char));
@@ -239,7 +239,7 @@ char telaAlterarPaciente(void) {
 
 
 
-char telaExcluirPaciente(void) {
+char* telaExcluirPaciente(void) {
     char* cpf;
     
     cpf = (char*) malloc(12*sizeof(char));
@@ -269,7 +269,7 @@ void gravarPaciente(Paciente* pac) {
 
   fp = fopen("pacientes.dat", "ab");
   if (fp == NULL) {
-          telaErroArquivo();
+          telaErroArquivoPaciente();
   }
   fwrite(pac, sizeof(Paciente), 1, fp);
   fclose(fp);
@@ -284,7 +284,7 @@ Paciente* buscarPaciente(char* cpf) {
     pac = (Paciente*) malloc(sizeof(Paciente));
     fp = fopen("pacientes.dat", "rb");
     if (fp == NULL) {
-            telaErroArquivo();
+            telaErroArquivoPaciente();
     }
     while(fread(pac, sizeof(Paciente), 1, fp)) {
             if (strcm(pac->cpf, cpf) == 0) && (pac->status == True)) {
@@ -327,13 +327,13 @@ void regravarPaciente(Paciente* pac, char* cpf) {
         pacLido = (Paciente*) malloc(sizeof(Paciente));
         fp = fopen("pacientes.dat", "r+b");
         if (fp == NULL) {
-                telaErroArquivo();
+                telaErroArquivoPaciente();
         }
         //while(!feof(fp)) {
         achou = False;
         while(fread(pacLido, sizeof(Paciente), 1, fp) && !achou) {
                 //fread(pacLido, sizeof(Paciente), 1, fp);
-                if (strcmp(pacLido->cpf,, pac->cpf) == 0) {
+                if (strcmp(pacLido->cpf, pac->cpf) == 0) {
                       achou = True;
                       fseek(fp, -1*sizeof(Paciente), SEEK_CUR);
                 fwrite(pac, sizeof(Paciente), 1, fp);

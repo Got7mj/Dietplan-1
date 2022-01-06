@@ -12,7 +12,7 @@
 typedef struct paciente Paciente;
 
 struct paciente {
-    char CPF[12];
+    char cpf[12];
     char nome[51];
     char idade[12];
     char peso[12];
@@ -26,7 +26,7 @@ struct paciente {
 void moduloPaciente(void);
 char menuPaciente(void);
 
-Paciente* telaPreencherPaciente(void);
+Paciente* telaCadastrarPaciente(void);
 char* telaPesquisarPaciente(void);
 char* telaAlterarPaciente(void);
 char* telaExcluirPaciente(void);

@@ -21,9 +21,9 @@ struct receita {
 
 
 void moduloReceita(void);
-char telaMenuReceita(void);
+char menuReceita(void);
 
-void telaCadastrarReceita(void);
+Receita* telaCadastrarReceita(void);
 void telaPesquisarReceita(void);
 void telaAlterarReceita(void);
 void telaExcluirReceita(void);
@@ -32,3 +32,4 @@ void cadastrarReceita(void);
 void pesquisarRceita(void);
 void alterarReceita(void);
 void excluirReceita(void);
+void gravarReceita(Receita*);

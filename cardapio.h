@@ -22,12 +22,16 @@ struct cardapio {
 void moduloCardapio(void);
 void menuCardapio(void);
 
-void telaCadastrarCardapio(void);
-void telaPesquisarCardapio(void);
+Cardapio* telaCadastrarCardapio(void);
+char* telaPesquisarCardapio(void);
 void telaAlterarCardapio(void);
 void telaExcluirCardapio(void);
+void gravarCardapio(Cardapio*);
 
 void cadastrarCardapio(void);
 void pesquisarCardapio(void);
 void alterarCardapio(void);
 void excluirCardapio(void);
+
+Cardapio* buscarCardapio(char*);
+void exibirCardapio(Cardapio*);
