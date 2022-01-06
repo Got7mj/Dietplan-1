@@ -20,19 +20,14 @@ struct cardapio {
 };
 
 void moduloCardapio(void);
-char menuCardapio(void);
-Cardapio* telapreecherCardapio(void);
-char* telaPesquisarCardapio(void);
-char* telaAlterarCardapio(void);
-char* telaExcluirCardapio(void);
-void telaErroArquivo(void);
+void menuCardapio(void);
+
+void telaCadastrarCardapio(void);
+void telaPesquisarCardapio(void);
+void telaAlterarCardapio(void);
+void telaExcluirCardapio(void);
+
 void cadastrarCardapio(void);
 void pesquisarCardapio(void);
 void alterarCardapio(void);
 void excluirCardapio(void);
-void gravarCardapio(Cardapio*);
-void exibirCardapio(Cardapio*);
-Cardapio* buscarCardapio(char);
-void exibirCardapio(Cardapio*);
-void regravarCardapio(Cardapio*);
-

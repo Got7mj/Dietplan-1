@@ -25,18 +25,20 @@ struct paciente {
 
 void moduloPaciente(void);
 char menuPaciente(void);
+
 Paciente* telaPreencherPaciente(void);
 char* telaPesquisarPaciente(void);
 char* telaAlterarPaciente(void);
 char* telaExcluirPaciente(void);
 void telaErroArquivo(void);
+
 void cadastrarPaciente(void);
 void pesquisarPaciente(void);
 void alterarPaciente(void);
 void excluirPaciente(void);
 void gravarPaciente(Paciente*);
 void exibirPaciente(Paciente*);
+
 Paciente* buscarPaciente(char*);
 void exibirPaciente(Paciente*);
 void regravarPaciente(Paciente*);
-
