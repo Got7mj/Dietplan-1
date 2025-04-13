@@ -1,0 +1,45 @@
+erDiagram
+
+  EMPREGADO {
+    string cod_empregado PK
+    string nome
+    string email
+  }
+
+  EMPREGADO_HORARIO_LIVRE {
+    string cod_empregado PK
+    int horas_mes
+    int horas_min_dia
+  }
+
+  EMPREGADO_HORARIO_FIXO {
+    string cod_empregado PK
+  }
+
+  TURNO {
+    string cod_turno PK
+    time hora_inicio
+    time hora_fim
+  }
+
+  DIA_SEMANA {
+    string cod_dia PK
+    string nome
+  }
+
+  PONTO {
+    string cod_ponto PK
+    time hora_entrada
+    time hora_saida
+    date data
+  }
+
+  EMPREGADO ||--|| EMPREGADO_HORARIO_LIVRE : "é"
+  EMPREGADO ||--|| EMPREGADO_HORARIO_FIXO : "é"
+
+  EMPREGADO_HORARIO_FIXO ||--o{ TURNO : "trabalha"
+  TURNO }o--|| DIA_SEMANA : "ocorre em"
+
+  EMPREGADO ||--o{ PONTO : "registra"
+  TURNO ||--o{ PONTO : "referente a"
+  DIA_SEMANA ||--o{ PONTO : "em"
