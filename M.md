@@ -22,6 +22,7 @@ Cardinalidade: Na notação de Chen, usa um símbolo numérico próximo ao relac
 Atributo Composto: Na notação de Chen, usa uma caixa retangular para indicar o atributo composto. Os sub-atributos são listados dentro da caixa. Notação Crow's Foot: Usa uma linha dupla para indicar o atributo composto. Os sub-atributos são listados abaixo da linha. Notação Bachman: Usa um "C" para indicar o atributo composto. 
 
 # E) 
+```mermaid
 erDiagram
 
     EMPREGADO {
